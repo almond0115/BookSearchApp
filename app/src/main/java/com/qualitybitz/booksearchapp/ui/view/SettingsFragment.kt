@@ -1,4 +1,4 @@
-package com.qualitybitz.booksearchapp.view
+package com.qualitybitz.booksearchapp.ui.view
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,17 +1,16 @@
-package com.qualitybitz.booksearchapp.viewmodel
+package com.qualitybitz.booksearchapp.ui.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.qualitybitz.booksearchapp.data.model.SearchResponse
 import com.qualitybitz.booksearchapp.data.repository.BookSearchRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class BookSearchViewModel( // 초기값으로 BookSearchRepository을 전달받아야 하지만
+class BookSearchViewModel(
+    // 초기값으로 BookSearchRepository을 전달받아야 하지만
     // viewModel은 그 자체로는 생성 시 초기값을 전달받을 수 없기 때문에 Factory를 만들어주어야 함
-    private val bookSearchRepository: BookSearchRepository
+    private val bookSearchRepository: BookSearchRepository,
+    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     // Api
@@ -30,5 +29,21 @@ class BookSearchViewModel( // 초기값으로 BookSearchRepository을 전달받�
         }
     }
 
+    // SavedState
+    // 쿼리 보존에 사용할 쿼리 변수를 정의
+    var query = String()
+        set(value) { // 쿼리의 값이 변화하면 그값을 바로 반영 -> savedState 저장
+            field = value
+            savedStateHandle.set(SAVE_STATE_KEY, value)
+        }
 
+    // view Model 초기화할 때 쿼리 초기값을 saveState에서 가져오도록 함
+    init {
+        query = savedStateHandle.get<String>(SAVE_STATE_KEY) ?: ""
+    }
+
+    // 저장 및 로드에 사용할 SAVE_STATE_KEY 정의
+    companion object {
+        private const val SAVE_STATE_KEY = "query"
+    }
 }

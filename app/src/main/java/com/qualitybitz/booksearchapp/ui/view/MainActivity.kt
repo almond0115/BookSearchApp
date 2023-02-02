@@ -1,4 +1,4 @@
-package com.qualitybitz.booksearchapp.view
+package com.qualitybitz.booksearchapp.ui.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.qualitybitz.booksearchapp.R
 import com.qualitybitz.booksearchapp.data.repository.BookSearchRepositoryImpl
 import com.qualitybitz.booksearchapp.databinding.ActivityMainBinding
-import com.qualitybitz.booksearchapp.viewmodel.BookSearchViewModel
-import com.qualitybitz.booksearchapp.viewmodel.BookSearchViewModelProviderFactory
+import com.qualitybitz.booksearchapp.ui.viewmodel.BookSearchViewModel
+import com.qualitybitz.booksearchapp.ui.viewmodel.BookSearchViewModelProviderFactory
 
 class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val bookSearchRepository = BookSearchRepositoryImpl()
-        val factory = BookSearchViewModelProviderFactory(bookSearchRepository)
+        val factory = BookSearchViewModelProviderFactory(bookSearchRepository, this)
         bookSearchViewModel = ViewModelProvider(this, factory)[BookSearchViewModel::class.java]
     }
 
